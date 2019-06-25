@@ -1,0 +1,141 @@
+<html>
+
+<head>
+    <style>
+        .line {
+            padding: 2px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            font-style: italic;
+        }
+    </style>
+    <script type="text/javascript">
+
+        const items = [
+            { index: 0, text: "We few, we happy few, we band of brothers;" },
+            { index: 1, text: "For he to-day that sheds his blood with me" },
+            { index: 2, text: "Shall be my brother; be he ne'er so vile," },
+            { index: 3, text: "This day shall gentle his condition;" },
+            { index: 4, text: "And gentlemen in England now a-bed" },
+            { index: 5, text: "Shall think themselves accurs'd they were not here," },
+            { index: 6, text: "And hold their manhoods cheap whiles any speaks" },
+            { index: 7, text: "That fought with us upon Saint Crispin's day." }
+        ];
+
+        function run() {
+            var node = document.getElementById("content");
+            while (node.firstChild) {
+                node.removeChild(node.firstChild);
+            }
+
+            var promises = [];
+            for (var i = 0; i < items.length; i++) {
+                p = new Promise(function (resolve, reject) {
+                    doAsynchOperation(items[i], (result) => {
+                        resolve(result);
+                    })
+                })
+                    .then((result) => { return result });
+
+                promises.push(p);
+            }
+            Promise.all(promises)
+                .then(values => doOutput(values));
+        }
+
+        function doAsynchOperation(item, cb) {
+            setTimeout(() => {
+                var words = item.text.split(" ");
+                words[words.length - 1] = words[words.length - 1].toUpperCase();
+                var obj = { text: words.join(" ") };
+                var newItem = Object.assign({}, item, obj);
+                cb(newItem);
+            }, Math.random() * 300);
+        }
+
+        function doOutput(items) {
+            for (var i = 0; i < items.length; i++) {
+                var node = document.createElement('p');
+                node.setAttribute("class", "line");
+                var textNode = document.createTextNode(items[i].text);
+                node.appendChild(textNode);
+                document.getElementById("content").appendChild(node);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Asynchronous operations in JavaScript</h1>
+    <h2>Promises</h2>
+    <div>
+        <p>
+            A Promise is a JavaScript construct that represents the future delivery of the result of an asynchronous
+            operation. A promise usually wraps around some asynchronous function.
+        </p>
+        <p>The promise constructor takes a function as its argument. JavaScript creates this function implicitly; you do
+            not have to write it. This function itself takes <i>two functions</i> as its arguments, and these are
+            likewise created for you. By convention these are named <i>resolve</i> and <i>reject</i>.
+            All you have to do is invoke the one or the other:</p>
+
+        <pre>var p = new Promise( function(resolve, reject) { /* Your code goes here; invoke resolve or reject */ } )</pre>
+
+        <ul>
+            <li>The first function resolves the promise and optionally returns a result</li>
+            <li>The second function rejects the promise and optionally returns an error</li>
+        </ul>
+
+        <p>If your code resolves the promise, the promise's then() function runs, and receives the result (if
+            any) your async code returned.</p>
+
+        <p>In this example we use Promise.all(), which returns an array of results, in order, when each of an array
+            of promises has resolved.</p>
+
+        <pre>
+                const items = [...];
+
+                var promises = [];
+                for (var i = 0; i < items.length; i++) {
+
+                    /* The promise body is a call to an async operation which then invokes resolve() or reject() */
+                    <strong>p = new Promise(function (resolve, reject) { 
+                        doAsynchOperation(items[i], (result) => {
+                            resolve(result);
+                        })
+                    })
+                    .then((result) => { return result });</strong> // this promise resolves to a value...
+        
+                    promises.push(p);
+                }
+                Promise.all(promises)
+                    .then(values => doOutput(values)); // ... and all the values are delivered here as an array, one value per promise
+
+            function doAsynchOperation(item, cb) {
+                setTimeout(() => {
+                    var words = item.text.split(" ");
+                    words[words.length - 1] = words[words.length - 1].toUpperCase();
+                    var obj = { text: words.join(" ") };
+                    var newItem = Object.assign({}, item, obj);
+                    cb(newItem);
+                }, 300);
+            }
+    
+            function doOutput(items) {
+                for (var i = 0; i < items.length; i++) {
+                    // ...output
+                }
+            }
+        </pre>
+        <p>Note that when we use Promise.all, we do not get any result until all the operations have completed. This can
+            make it appear to run slower.</p>
+
+        <p>Promises are syntactically messy. We will see a cleaner alternative in another example.</p>
+    </div>
+    <div>
+        <button onclick="run()">Run</button>
+    </div>
+    <div id="content"></div>
+
+</body>
+
+</html>

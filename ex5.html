@@ -1,0 +1,109 @@
+<html>
+
+<head>
+    <style>
+        .line {
+            padding: 2px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            font-style: italic;
+        }
+    </style>
+    <script type="text/javascript">
+        // Because we will use await, we add the async modifier
+        async function run() {
+            const items = [
+                { index: 0, text: "We few, we happy few, we band of brothers;" },
+                { index: 1, text: "For he to-day that sheds his blood with me" },
+                { index: 2, text: "Shall be my brother; be he ne'er so vile," },
+                { index: 3, text: "This day shall gentle his condition;" },
+                { index: 4, text: "And gentlemen in England now a-bed" },
+                { index: 5, text: "Shall think themselves accurs'd they were not here," },
+                { index: 6, text: "And hold their manhoods cheap whiles any speaks" },
+                { index: 7, text: "That fought with us upon Saint Crispin's day." }
+            ];
+
+            var node = document.getElementById("content");
+            while (node.firstChild) {
+                node.removeChild(node.firstChild);
+            }
+
+            for (var i = 0; i < items.length; i++) {
+                var value = await doAsynchOperation(items[i]); // await a function that returns a promise
+                doOutput(value);
+            }
+        }
+
+        function doAsynchOperation(item) {
+            return new Promise(function (resolve, reject) {
+                setTimeout(() => {
+                    var words = item.text.split(" ");
+                    words[words.length - 1] = words[words.length - 1].toUpperCase();
+                    var obj = { text: words.join(" ") };
+                    item = Object.assign({}, item, obj);
+                    resolve(item);
+                }, Math.random() * 750);
+            });
+        }
+
+        function doOutput(item) {
+            var node = document.createElement('p');
+            node.setAttribute("class", "line");
+            var textNode = document.createTextNode(item.text);
+            node.appendChild(textNode);
+            document.getElementById("content").appendChild(node);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Asynchronous operations in JavaScript</h1>
+    <h2>Async and await</h2>
+    <div>
+        <p>
+            Promises are a huge improvement over the nested callbacks we saw in earlier examples. However their syntax is clumsy.
+            Two keywords, <i>async</i> and <i>await</i>, make Promises easier to work with.
+        </p>
+
+        <p>Use await when invoking a method that returns a promise. If the promise resolves, await returns the value. Your code will pause until the promise resolves or rejects.</p>
+        <p>Add async as a modifier on any function where you use await.</p>
+            
+        <pre>
+            <strong>async</strong> function run() { // Because we will use await, we add the async modifier
+                const items = [
+                    { index: 0, text: "We few, we happy few, we band of brothers;" },
+                    ...
+                ];
+        
+                for (var i = 0; i < items.length; i++) {
+                    var value = <strong>await</strong> doAsynchOperation(items[i]); // await a function that returns a promise
+                    doOutput(value);
+                }
+            } 
+        
+            function doAsynchOperation(item) {
+                return new Promise(function (resolve, reject) {
+                    setTimeout(() => {
+                        var words = item.text.split(" ");
+                        words[words.length - 1] = words[words.length - 1].toUpperCase();
+                        var obj = { text: words.join(" ") };
+                        item = Object.assign({}, item, obj);
+                        resolve(item);
+                    }, Math.random() * 300);
+                });
+            }
+        
+                function doOutput(item) {
+                    // print output
+                }
+        </pre>
+        
+    </div>
+    <div>
+        <button onclick="run()">Run</button>
+    </div>
+    <div id="content"></div>
+
+</body>
+
+</html>
