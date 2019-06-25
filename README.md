@@ -1,6 +1,6 @@
 ## A few remarks on asynchronous operations in JavaScript
 
-- Many operations in JavaScript are asynchronous
+- Many operations in JavaScript are asynchronous (file i/o, web service calls...)
 - Callbacks are the basic tool for working with asynchronous operations
 - Callbacks have disadvantages related to complexity, loss of control, and error handling
 
