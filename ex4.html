@@ -62,8 +62,7 @@
     <div id="banner">
         <h1>Asynchronous operations in JavaScript</h1>
         <h2>Promises</h2>
-        <span>Promises allow you to work with asynch operations in lexical order.</span> <a href="#" class="button" onclick="run()">Run</a>  
-        <!-- <button onclick="run()">Run</button> -->
+        <span class="summary">Promises allow you to treat asynch operations as if they occur in the order they appear in your code.</span> <a href="#" class="button" onclick="run()">Run</a>
     </div>
     <div id="wrapper">
         <div id="text">
@@ -93,39 +92,39 @@
             <button class="collapsible">Code</button>
             <div class="content">
                     <pre>
-    function run() {
-        const items = [...];
-        var promises = [];
-        for (var i = 0; i < items.length; i++) {
-    
-            /* The promise body is a call to an async operation which then invokes resolve() or reject() */
-            p = new Promise(function (resolve, reject) { 
-                        doAsynchOperation(items[i], (result) => {
-                            resolve(result);
-                            })
-            })
-            .then((result) => { return result }); // this promise resolves to a value...
-            
-            promises.push(p);
-        }
-    
-        // Note that Promise.all() itself returns a promise, so we call then() on it to get our result
-        Promise.all(promises)
-            .then(values => doOutput(values)); // ... and all the values are delivered here as an array, one value per promise
-    }
-    
-    function doAsynchOperation(item, cb) {
-        setTimeout(() => {
-            ... // same as previous example
-            cb(newItem);
-        }, 300);
-    }
+function run() {
+    const items = [...];
+    var promises = [];
+    for (var i = 0; i < items.length; i++) {
+
+        /* The promise body is a call to an async operation which then invokes resolve() or reject() */
+        p = new Promise(function (resolve, reject) { 
+                    doAsynchOperation(items[i], (result) => {
+                        resolve(result);
+                        })
+        })
+        .then((result) => { return result }); // this promise resolves to a value...
         
-    function doOutput(items) {
-        for (var i = 0; i < items.length; i++) {
-            // ...output
-        }
+        promises.push(p);
     }
+
+    // Note that Promise.all() itself returns a promise, so we call then() on it to get our result
+    Promise.all(promises)
+        .then(values => doOutput(values)); // ... and all the values are delivered here as an array, one value per promise
+}
+
+function doAsynchOperation(item, cb) {
+    setTimeout(() => {
+        ... // same as previous example
+        cb(newItem);
+    }, 300);
+}
+    
+function doOutput(items) {
+    for (var i = 0; i < items.length; i++) {
+        // ...output
+    }
+}
                         </pre>
             </div>
             
