@@ -1,10 +1,10 @@
 ## A few remarks on asynchronous operations in JavaScript
 
-[Callbacks and the callback queue, part 1](ex1.html)
+[Callbacks and the callback queue, part 1](http://catcarrier.github.io/async_js/ex1.html)
 
-[Callbacks and the callback queue, part 2](ex2.html)
+[Callbacks and the callback queue, part 2](http://catcarrier.github.io/async_js/ex2.html)
 
-[Callbacks and the callback queue, part 3](ex3.html)
+[Callbacks and the callback queue, part 3](http://catcarrier.github.io/async_js/ex3.html)
 
 [Promises](ex4.html)
 
