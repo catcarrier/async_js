@@ -2,6 +2,18 @@
 
 <head>
     <style>
+        #wrapper {
+            display: flex;
+        }
+
+        #text {
+            flex: 0 0 60%;
+        }
+
+        #output {
+            flex: 1;
+        }
+
         .line {
             padding: 2px;
             margin-top: 2px;
@@ -66,79 +78,83 @@
 </head>
 
 <body>
-    <h1>Asynchronous operations in JavaScript</h1>
-    <h2>Promises</h2>
-
-    <p>Next: <a href="ex5.html">Async and await</a></p>
-
-    <div>
-        <p>
-            A Promise is a JavaScript construct that represents the future delivery of the result of an asynchronous
-            operation. A promise usually wraps around some asynchronous function.
-        </p>
-        <p>The promise constructor takes a function as its argument. JavaScript creates this function implicitly; you do
-            not have to write it. This function itself takes <i>two functions</i> as its arguments, and these are
-            likewise created for you. By convention these are named <i>resolve</i> and <i>reject</i>.
-            All you have to do is invoke the one or the other:</p>
-
-        <pre>var p = new Promise( function(resolve, reject) { /* Your code goes here; invoke resolve or reject */ } )</pre>
-
-        <ul>
-            <li>Invoke the first function to <i>resolve</i> the promise and optionally return a result</li>
-            <li>Invoke the second function to <i>reject</i> the promise; optionally return an error</li>
-        </ul>
-
-        <p>If your code resolves the promise, the promise's then() function runs, and receives the result (if
-            any) your async code returned.</p>
-
-        <p>In this example we use Promise.all(), which returns an array of results, in order, when each of an array
-            of promises has resolved. Note that we have moved our array out of the global scope.</p>
-
-        <pre>
-            function run() {
-                const items = [...];
-
-                var promises = [];
-                for (var i = 0; i < items.length; i++) {
-
-                    /* The promise body is a call to an async operation which then invokes resolve() or reject() */
-                    <strong>p = new Promise(function (resolve, reject) { 
-                        doAsynchOperation(items[i], (result) => {
-                            resolve(result);
-                        })
-                    })
-                    .then((result) => { return result });</strong> // this promise resolves to a value...
-        
-                    promises.push(p);
-                }
-
-                // Note that Promise.all() itself returns a promise, so we call then() on it to get our result
-                Promise.all(promises)
-                    .then(values => doOutput(values)); // ... and all the values are delivered here as an array, one value per promise
-            }
-
-            function doAsynchOperation(item, cb) {
-                setTimeout(() => {
-                    ... // same as previous example
-                    cb(newItem);
-                }, 300);
-            }
-    
-            function doOutput(items) {
-                for (var i = 0; i < items.length; i++) {
-                    // ...output
-                }
-            }
-        </pre>
-        <p>Note that when we use Promise.all, we do not get any result until all the operations have completed. This can
-            make it appear to run slower.</p>
-
-        <p>Promises are syntactically messy. We will see a cleaner alternative in another example.</p>
-    </div>
-    <div>
+    <div id="banner">
+        <h1>Asynchronous operations in JavaScript</h1>
+        <h2>Promises</h2>
+        <h4>Promises allow you to work with asynch operations in lexical order.</h4>
         <button onclick="run()">Run</button>
+        <p>Next: <a href="ex5.html">Async and await</a></p>
     </div>
-    <div id="content"></div>
+    <div id="wrapper">
+        <div id="text">
+            <p>
+                A Promise is a JavaScript construct that represents the future delivery of the result of an asynchronous
+                operation. A promise usually wraps around some asynchronous function.
+            </p>
+            <p>The promise constructor takes a function as its argument. JavaScript creates this function implicitly;
+                you do
+                not have to write it. This function itself takes <i>two functions</i> as its arguments, and these are
+                likewise created for you. By convention these are named <i>resolve</i> and <i>reject</i>.
+                All you have to do is invoke the one or the other:</p>
+
+            <pre>var p = new Promise( function(resolve, reject) { /* Your code goes here; invoke resolve or reject */ } )</pre>
+
+            <ul>
+                <li>Invoke the first function to <i>resolve</i> the promise and optionally return a result</li>
+                <li>Invoke the second function to <i>reject</i> the promise; optionally return an error</li>
+            </ul>
+
+            <p>If your code resolves the promise, the promise's then() function runs, and receives the result (if
+                any) your async code returned.</p>
+
+            <p>In this example we use Promise.all(), which returns an array of results, in order, when each of an array
+                of promises has resolved. Note that we have moved our array out of the global scope.</p>
+
+            <pre>
+                function run() {
+                    const items = [...];
+                    var promises = [];
+                    for (var i = 0; i < items.length; i++) {
+                
+                        /* The promise body is a call to an async operation which then invokes resolve() or reject() */
+                        p = new Promise(function (resolve, reject) { 
+                                  doAsynchOperation(items[i], (result) => {
+                                        resolve(result);
+                                     })
+                        })
+                        .then((result) => { return result }); // this promise resolves to a value...
+                        
+                        promises.push(p);
+                    }
+                
+                    // Note that Promise.all() itself returns a promise, so we call then() on it to get our result
+                    Promise.all(promises)
+                        .then(values => doOutput(values)); // ... and all the values are delivered here as an array, one value per promise
+                }
+                
+                function doAsynchOperation(item, cb) {
+                    setTimeout(() => {
+                        ... // same as previous example
+                        cb(newItem);
+                    }, 300);
+                }
+                    
+                function doOutput(items) {
+                    for (var i = 0; i < items.length; i++) {
+                        // ...output
+                    }
+                }
+            </pre>
+            <p>Note that when we use Promise.all, we do not get any result until all the operations have completed. This
+                can
+                make it appear to run slower.</p>
+
+            <p>Promises are syntactically messy. We will see a cleaner alternative in another example.</p>
+        </div>
+        <div id="output">
+            <div id="content"></div>
+        </div>
+    </div>
 
 </body>
 

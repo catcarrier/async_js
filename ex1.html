@@ -2,8 +2,19 @@
 
 <head>
     <style>
-        .line {
+        #wrapper {
+            display: flex;
+        }
 
+        #text {
+            flex: 0 0 60%;
+        }
+
+        #output {
+            flex: 1;
+        }
+
+        .line {
             padding: 2px;
             margin-top: 2px;
             margin-bottom: 2px;
@@ -66,76 +77,89 @@
 </head>
 
 <body>
-    <div>
-        <h1>Asynchronous operations in JavaScript</h1>
-        <h2>Callbacks and the callback queue, part 1</h2>
+    <div id="banner">
+            <h1>Asynchronous operations in JavaScript</h1>
+            <h2>Callbacks and the callback queue, part 1</h2>
+            <h4>This example shows that the results of asynchronous operations are unordered.</h4>
+            <button onclick="run()">Run</button>
+            <p>Next: <a href="ex2.html">Part 2</a></p>
+    </div>
+    <div id="wrapper">
+        <div id="text">
+            <p>Calls to asynchronous operations are placed in a special area called the callback queue, and run only
+                when
+                our current function has completed. The callback queue works together with the <a
+                    href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">event loop</a> to execute your callback once the
+                thread is available.
+            </p>
 
-        <p>Next: <a href="ex2.html">Part 2</a></p>
+            <p>
+                Because JavaScript is single-threaded, as long as the current function ("run") is occupying the call
+                stack,
+                the underlying thread is not available
+                to run any of the callbacks. When the callbacks do run, their run order is undefined.
+            </p>
 
-        <p>Calls to asynchronous operations are placed in a special area called the callback queue, and run only when
-            our current function has completed. The callback queue works together with the <a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">event loop</a> to execute your callback once the thread is available.
-        </p>
+            <p>
+                In this example we output each verse through a call to an asynchronous function (we use setTimeout() to
+                achieve this; a more realistic example might be a file system operation, which are usually
+                asynchronous).
+                Each callback is invoked after a delay of at least 300 ms, and returns the verse with the last word
+                uppercased.
+            </p>
 
-        <p>
-            Because JavaScript is single-threaded, as long as the current function ("run") is occupying the call stack, the underlying thread is not available 
-            to run any of the callbacks. When the callbacks do run, their run order is undefined.
-        </p>
-            
-        <p>
-            In this example we output each verse through a call to an asynchronous function (we use setTimeout() to achieve this; a more realistic example might be a file system operation, which are usually asynchronous).
-            Each callback is invoked after a delay of at least 300 ms, and returns the verse with the last word uppercased.
-        </p>
+            <ul>
+                <li>Callbacks cannot execute until the current function has completed</li>
+                <li>Callbacks can execute in any order</li>
+            </ul>
 
-        <ul>
-            <li>Callbacks cannot execute until the current function has completed</li>
-            <li>Callbacks can execute in any order</li>
-        </ul>
-
-        <pre>
-            const items = [
-                { index: 0, text: "We few, we happy few, we band of brothers;" },
-                { index: 1, text: "For he to-day that sheds his blood with me" },
-                { index: 2, text: "Shall be my brother; be he ne'er so vile," },
-                { index: 3, text: "This day shall gentle his condition;" },
-                { index: 4, text: "And gentlemen in England now a-bed" },
-                { index: 5, text: "Shall think themselves accurs'd they were not here," },
-                { index: 6, text: "And hold their manhoods cheap whiles any speaks" },
-                { index: 7, text: "That fought with us upon Saint Crispin's day." }
-            ];
-
-            function run() {
-                // print "setting up callbacks..."
-                
-                for (var i = 0; i < items.length; i++) {
-                    doAsynchOperation(items[i], doOutput)
-                }
-    
-                // print "setting up callbacks... done" <-- Callbacks cannot run until this line completes and run() is removed from the stack, leaving the thread available for other work
-            }
-
-            function doAsynchOperation(item, cb) {
-                setTimeout(() => { // setTimeout is a convenient way to tell JS to run our doOutput asynchronously
-                    var words = item.text.split(" ");
-                    words[words.length - 1] = words[words.length - 1].toUpperCase();
-                    var obj = { text: words.join(" ") };
-                    item = Object.assign({}, item, obj);
-                    cb(item);
-                }, Math.random() * 300);
-            }
-
-            function doOutput(item) {
-                // print the item
-            }
-        </pre>
+            <pre>
+                    const items = [
+                        { index: 0, text: "We few, we happy few, we band of brothers;" },
+                        { index: 1, text: "For he to-day that sheds his blood with me" },
+                        { index: 2, text: "Shall be my brother; be he ne'er so vile," },
+                        { index: 3, text: "This day shall gentle his condition;" },
+                        { index: 4, text: "And gentlemen in England now a-bed" },
+                        { index: 5, text: "Shall think themselves accurs'd they were not here," },
+                        { index: 6, text: "And hold their manhoods cheap whiles any speaks" },
+                        { index: 7, text: "That fought with us upon Saint Crispin's day." }
+                    ];
         
-        </p>
-        Note that the callbacks only begin to execute after our current method completes.
-        </p>
+                    function run() {
+                        // print "setting up callbacks..."
+                        
+                        for (var i = 0; i < items.length; i++) {
+                            doAsynchOperation(items[i], doOutput)
+                        }
+            
+                        // print "setting up callbacks... done" <-- Callbacks cannot run until this line completes and run() is removed from the stack, leaving the thread available for other work
+                    }
+        
+                    function doAsynchOperation(item, cb) {
+                        setTimeout(() => { // setTimeout is a convenient way to tell JS to run our doOutput asynchronously
+                            var words = item.text.split(" ");
+                            words[words.length - 1] = words[words.length - 1].toUpperCase();
+                            var obj = { text: words.join(" ") };
+                            item = Object.assign({}, item, obj);
+                            cb(item);
+                        }, Math.random() * 300);
+                    }
+        
+                    function doOutput(item) {
+                        // print the item
+                    }
+                </pre>
+
+            </p>
+            Note that the callbacks only begin to execute after our current method completes.
+            </p>
+            
+        </div>
+        <div id="output">
+            <div id="content"></div>
+        </div>
     </div>
-    <div>
-        <button onclick="run()">Run</button>
-    </div>
-    <div id="content"></div>
+
 
 </body>
 

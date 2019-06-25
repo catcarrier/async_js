@@ -2,8 +2,19 @@
 
 <head>
     <style>
-        .line {
+        #wrapper {
+            display: flex;
+        }
 
+        #text {
+            flex: 0 0 60%;
+        }
+
+        #output {
+            flex: 1;
+        }
+
+        .line {
             padding: 2px;
             margin-top: 2px;
             margin-bottom: 2px;
@@ -11,8 +22,6 @@
         }
     </style>
     <script type="text/javascript">
-
-
         function run() {
             var node = document.getElementById("content");
             while (node.firstChild) {
@@ -59,61 +68,72 @@
 </head>
 
 <body>
-    <h1>Asynchronous operations in JavaScript</h1>
-    <h2>Callbacks and the callback queue, part 2</h2>
-
-    <p>Next: <a href="ex3.html">Part 3</a></p>
-
-    <p>Sometimes you need to run multiple asynchronous operations, but process the result of each operation in a defined order.
-        For example you might need to use the result of the first operation as an input to the second.
-        Processing the results of asynchronous operations in a fixed order using vanilla JavaScript is
-        <b>difficult</b>.
-    </p>
-    <p>
-        Continuing with our array from the previous example, suppose we wish to pass each element through an async operation, but process the results in array order.
-        One way to do this is to pass the whole array to a callback.
-        The callback removes and processes the first element, and then calls itself recursively until the array is empty.
-    </p>
-
-    <pre>
-            function run() {
-                const items = [
-                    { index: 0, text: "We few, we happy few, we band of brothers;" },
-                    ...
-                    { index: 7, text: "That fought with us upon Saint Crispin's day." }
-                ];
-
-                doAsynchOperation(items, doOutput); // 1. this time we pass the whole array...
-            }
-
-            function doAsynchOperation(items, cb) {
-                if (items.length > 0) { // 2. and while there are elements remaining...
-                    setTimeout(() => {
-                        var item = items.shift(); // 3... remove the first one and pass it to the callback...
-                        var words = item.text.split(" ");
-                        words[words.length - 1] = words[words.length - 1].toUpperCase();
-                        var obj = { text: words.join(" ") };
-                        item = Object.assign({}, item, obj);
-                        cb(item, items); // 4. ..along with all the remaining elements..
-                    }, 300);
-                }
-            }
-
-            function doOutput(item, remainingItems) {
-                // .. output the element here as before
-    
-                doAsynchOperation(remainingItems, doOutput); // 5. And repeat this process until the array is empty
-            }
-        </pre>
-    <p>This technique has a long list of problems, including but not limited to:</p>
-    <ul>
-        <li>The code becomes hard to reason about</li>
-        <li>Error handling is effectively impossible</li>
-    </ul>
-    <div>
+    <div id="banner">
+        <h1>Asynchronous operations in JavaScript</h1>
+        <h2>Callbacks and the callback queue, part 2</h2>
+        <h4>This example shows one way -- not a good way -- to handle asynch results in a defined order.</h4>
         <button onclick="run()">Run</button>
+        <p>Next: <a href="ex3.html">Part 3</a></p>
     </div>
-    <div id="content"></div>
+    <div id="wrapper">
+        <div id="text">
+            <p>Sometimes you need to run multiple asynchronous operations, but process the result of each operation in a
+                defined
+                order.
+                For example you might need to use the result of the first operation as an input to the second.
+                Processing the results of asynchronous operations in a fixed order using vanilla JavaScript is
+                <b>difficult</b>.
+            </p>
+            <p>
+                Continuing with our array from the previous example, suppose we wish to pass each element through an
+                async
+                operation, but process the results in array order.
+                One way to do this is to pass the whole array to a callback.
+                The callback removes and processes the first element, and then calls itself recursively until the array
+                is
+                empty.
+            </p>
+
+            <pre>
+                            function run() {
+                                const items = [
+                                    { index: 0, text: "We few, we happy few, we band of brothers;" },
+                                    ...
+                                    { index: 7, text: "That fought with us upon Saint Crispin's day." }
+                                ];
+                
+                                doAsynchOperation(items, doOutput); // 1. this time we pass the whole array...
+                            }
+                
+                            function doAsynchOperation(items, cb) {
+                                if (items.length > 0) { // 2. and while there are elements remaining...
+                                    setTimeout(() => {
+                                        var item = items.shift(); // 3... remove the first one and pass it to the callback...
+                                        var words = item.text.split(" ");
+                                        words[words.length - 1] = words[words.length - 1].toUpperCase();
+                                        var obj = { text: words.join(" ") };
+                                        item = Object.assign({}, item, obj);
+                                        cb(item, items); // 4. ..along with all the remaining elements..
+                                    }, 300);
+                                }
+                            }
+                
+                            function doOutput(item, remainingItems) {
+                                // .. output the element here as before
+                    
+                                doAsynchOperation(remainingItems, doOutput); // 5. And repeat this process until the array is empty
+                            }
+                        </pre>
+            <p>This technique has a long list of problems, including but not limited to:</p>
+            <ul>
+                <li>The code becomes hard to reason about</li>
+                <li>Error handling is effectively impossible</li>
+            </ul>
+        </div>
+        <div id="output">
+            <div id="content"></div>
+        </div>
+    </div>
 
 </body>
 
