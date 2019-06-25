@@ -14,11 +14,42 @@
             flex: 1;
         }
 
+        .collapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .active,
+        .collapsible:hover {
+            background-color: #555;
+        }
+
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            background-color: #f1f1f1;
+        }
+
         .line {
             padding: 2px;
             margin-top: 2px;
             margin-bottom: 2px;
             font-style: italic;
+        }
+
+        .pre {
+            font-family: "Courier New", monospace;
+            white-space: pre;
+            font-size: .8em;
         }
     </style>
     <script type="text/javascript">
@@ -87,41 +118,60 @@
                 Your code will pause until the promise resolves or rejects.</p>
             <p>Add async as a modifier on any function where you use await.</p>
 
-            <pre>
-                <strong>async</strong> function run() { // Because we will use await, we add the async modifier
-                    const items = [
-                        { index: 0, text: "We few, we happy few, we band of brothers;" },
-                        ...
-                    ];
+            <button class="collapsible">Code</button>
+            <div class="content">
+        <pre>
+    <strong>async</strong> function run() { // Because we will use await, we add the async modifier
+        const items = [
+            { index: 0, text: "We few, we happy few, we band of brothers;" },
+            ...
+        ];
                     
-                    for (var i = 0; i < items.length; i++) {
-                        var value = <strong>await</strong> doAsynchOperation(items[i]); // await a function that returns a promise
-                        doOutput(value);
-                    }
-                } 
+        for (var i = 0; i < items.length; i++) {
+            var value = <strong>await</strong> doAsynchOperation(items[i]); // await a function that returns a promise
+            doOutput(value);
+        }
+    } 
                     
-                function doAsynchOperation(item) {
-                    return new Promise(function (resolve, reject) {
-                        setTimeout(() => {
-                            var words = item.text.split(" ");
-                            words[words.length - 1] = words[words.length - 1].toUpperCase();
-                            var obj = { text: words.join(" ") };
-                            item = Object.assign({}, item, obj);
-                            resolve(item);
-                        }, Math.random() * 300);
-                    });
-                }
+    function doAsynchOperation(item) {
+        return new Promise(function (resolve, reject) {
+            setTimeout(() => {
+                var words = item.text.split(" ");
+                words[words.length - 1] = words[words.length - 1].toUpperCase();
+                var obj = { text: words.join(" ") };
+                item = Object.assign({}, item, obj);
+                resolve(item);
+            }, Math.random() * 300);
+        });
+    }
                     
-                function doOutput(item) {
-                    // print output
-                }
+    function doOutput(item) {
+        // print output
+    }
             </pre>
+            </div>
+            
         </div>
         <div id="output">
             <div id="content"></div>
         </div>
     </div>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
 
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

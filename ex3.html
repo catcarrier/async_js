@@ -14,11 +14,42 @@
             flex: 1;
         }
 
+        .collapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .active,
+        .collapsible:hover {
+            background-color: #555;
+        }
+
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            background-color: #f1f1f1;
+        }
+
         .line {
             padding: 2px;
             margin-top: 2px;
             margin-bottom: 2px;
             font-style: italic;
+        }
+
+        .pre {
+            font-family: "Courier New", monospace;
+            white-space: pre;
+            font-size: .8em;
         }
     </style>
     <script type="text/javascript">
@@ -110,41 +141,46 @@
                 is the same size as the first, we print its contents.
             </p>
 
+            <button class="collapsible">Code</button>
+            <div class="content">
             <pre>
-                        const items = [
-                            { index: 0, text: "We few, we happy few, we band of brothers;" },
-                            { index: 1, text: "For he to-day that sheds his blood with me" },
-                            ...
-                        ]; // this array is now global
-                        var modified_items = [];
+    const items = [
+        { index: 0, text: "We few, we happy few, we band of brothers;" },
+        { index: 1, text: "For he to-day that sheds his blood with me" },
+        ...
+    ]; // this array is now global
+    var modified_items = [];
             
-                        function run() {
-                            for (var i = 0; i < items.length; i++) {
-                                doAsynchOperation(items[i], doOutput)
-                            }
-                        }
+    function run() {
+        for (var i = 0; i < items.length; i++) {
+            doAsynchOperation(items[i], doOutput)
+        }
+    }
             
-                        function doAsynchOperation(item, cb) {
-                            setTimeout(() => {
-                                var words = item.text.split(" ");
-                                words[words.length - 1] = words[words.length - 1].toUpperCase();
-                                var obj = { text: words.join(" ") };
-                                var newItem = Object.assign({}, item, obj);
-                                cb(newItem);
-                            }, 300);
-                        }
+    function doAsynchOperation(item, cb) {
+        setTimeout(() => {
+            var words = item.text.split(" ");
+            words[words.length - 1] = words[words.length - 1].toUpperCase();
+            var obj = { text: words.join(" ") };
+            var newItem = Object.assign({}, item, obj);
+            cb(newItem);
+        }, 300);
+    }
                 
-                        function doOutput(item) {
-                            modified_items.push(item); // order is undefined
+    function doOutput(item) {
+        modified_items.push(item); // order is undefined
                 
-                            if (modified_items.length == items.length) { // when the new array is the same size as the original, then we have all the elements
-                                modified_items = modified_items.sort((a, b) => a.index - b.index); // sort the elements by index
-                                for (var i = 0; i < modified_items.length; i++) {
-                                    // output the verse
-                                }
-                            }
-                        }
-                    </pre>
+        if (modified_items.length == items.length) { // when the new array is the same size as the original, then we have all the elements
+            modified_items = modified_items.sort((a, b) => a.index - b.index); // sort the elements by index
+            for (var i = 0; i < modified_items.length; i++) {
+                // output the verse
+            }
+        }
+    }
+        </pre>
+            </div>
+
+            
             <p>
                 This technique has much the same problems as the previous version. These include but are not limited to:
             </p>
@@ -160,6 +196,22 @@
             <div id="content"></div>
         </div>
     </div>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

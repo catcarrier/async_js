@@ -14,11 +14,42 @@
             flex: 1;
         }
 
+        .collapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .active,
+        .collapsible:hover {
+            background-color: #555;
+        }
+
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            background-color: #f1f1f1;
+        }
+
         .line {
             padding: 2px;
             margin-top: 2px;
             margin-bottom: 2px;
             font-style: italic;
+        }
+
+        .pre {
+            font-family: "Courier New", monospace;
+            white-space: pre;
+            font-size: .8em;
         }
     </style>
     <script type="text/javascript">
@@ -94,36 +125,40 @@
                 empty.
             </p>
 
-            <pre>
-                            function run() {
-                                const items = [
-                                    { index: 0, text: "We few, we happy few, we band of brothers;" },
-                                    ...
-                                    { index: 7, text: "That fought with us upon Saint Crispin's day." }
-                                ];
+            <button class="collapsible">Code</button>
+            <div class="content">
+                <pre>
+    function run() {
+        const items = [
+            { index: 0, text: "We few, we happy few, we band of brothers;" },
+            ...
+            { index: 7, text: "That fought with us upon Saint Crispin's day." }
+        ];
                 
-                                doAsynchOperation(items, doOutput); // 1. this time we pass the whole array...
-                            }
+        doAsynchOperation(items, doOutput); // 1. this time we pass the whole array...
+    }
                 
-                            function doAsynchOperation(items, cb) {
-                                if (items.length > 0) { // 2. and while there are elements remaining...
-                                    setTimeout(() => {
-                                        var item = items.shift(); // 3... remove the first one and pass it to the callback...
-                                        var words = item.text.split(" ");
-                                        words[words.length - 1] = words[words.length - 1].toUpperCase();
-                                        var obj = { text: words.join(" ") };
-                                        item = Object.assign({}, item, obj);
-                                        cb(item, items); // 4. ..along with all the remaining elements..
-                                    }, 300);
-                                }
-                            }
+    function doAsynchOperation(items, cb) {
+        if (items.length > 0) { // 2. and while there are elements remaining...
+            setTimeout(() => {
+                var item = items.shift(); // 3... remove the first one and pass it to the callback...
+                var words = item.text.split(" ");
+                words[words.length - 1] = words[words.length - 1].toUpperCase();
+                var obj = { text: words.join(" ") };
+                item = Object.assign({}, item, obj);
+                cb(item, items); // 4. ..along with all the remaining elements..
+            }, 300);
+        }
+    }
                 
-                            function doOutput(item, remainingItems) {
-                                // .. output the element here as before
-                    
-                                doAsynchOperation(remainingItems, doOutput); // 5. And repeat this process until the array is empty
-                            }
-                        </pre>
+    function doOutput(item, remainingItems) {
+        // .. output the element here as before
+                   
+        doAsynchOperation(remainingItems, doOutput); // 5. And repeat this process until the array is empty
+    }
+            </pre>
+            </div>
+     
             <p>This technique has a long list of problems, including but not limited to:</p>
             <ul>
                 <li>The code becomes hard to reason about</li>
@@ -135,6 +170,22 @@
         </div>
     </div>
 
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

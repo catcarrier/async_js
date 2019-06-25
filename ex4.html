@@ -14,11 +14,42 @@
             flex: 1;
         }
 
+        .collapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .active,
+        .collapsible:hover {
+            background-color: #555;
+        }
+
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            background-color: #f1f1f1;
+        }
+
         .line {
             padding: 2px;
             margin-top: 2px;
             margin-bottom: 2px;
             font-style: italic;
+        }
+
+        .pre {
+            font-family: "Courier New", monospace;
+            white-space: pre;
+            font-size: .8em;
         }
     </style>
     <script type="text/javascript">
@@ -110,41 +141,45 @@
             <p>In this example we use Promise.all(), which returns an array of results, in order, when each of an array
                 of promises has resolved. Note that we have moved our array out of the global scope.</p>
 
-            <pre>
-                function run() {
-                    const items = [...];
-                    var promises = [];
-                    for (var i = 0; i < items.length; i++) {
-                
-                        /* The promise body is a call to an async operation which then invokes resolve() or reject() */
-                        p = new Promise(function (resolve, reject) { 
-                                  doAsynchOperation(items[i], (result) => {
-                                        resolve(result);
-                                     })
-                        })
-                        .then((result) => { return result }); // this promise resolves to a value...
-                        
-                        promises.push(p);
-                    }
-                
-                    // Note that Promise.all() itself returns a promise, so we call then() on it to get our result
-                    Promise.all(promises)
-                        .then(values => doOutput(values)); // ... and all the values are delivered here as an array, one value per promise
-                }
-                
-                function doAsynchOperation(item, cb) {
-                    setTimeout(() => {
-                        ... // same as previous example
-                        cb(newItem);
-                    }, 300);
-                }
-                    
-                function doOutput(items) {
-                    for (var i = 0; i < items.length; i++) {
-                        // ...output
-                    }
-                }
-            </pre>
+            <button class="collapsible">Code</button>
+            <div class="content">
+                    <pre>
+                            function run() {
+                                const items = [...];
+                                var promises = [];
+                                for (var i = 0; i < items.length; i++) {
+                            
+                                    /* The promise body is a call to an async operation which then invokes resolve() or reject() */
+                                    p = new Promise(function (resolve, reject) { 
+                                              doAsynchOperation(items[i], (result) => {
+                                                    resolve(result);
+                                                 })
+                                    })
+                                    .then((result) => { return result }); // this promise resolves to a value...
+                                    
+                                    promises.push(p);
+                                }
+                            
+                                // Note that Promise.all() itself returns a promise, so we call then() on it to get our result
+                                Promise.all(promises)
+                                    .then(values => doOutput(values)); // ... and all the values are delivered here as an array, one value per promise
+                            }
+                            
+                            function doAsynchOperation(item, cb) {
+                                setTimeout(() => {
+                                    ... // same as previous example
+                                    cb(newItem);
+                                }, 300);
+                            }
+                                
+                            function doOutput(items) {
+                                for (var i = 0; i < items.length; i++) {
+                                    // ...output
+                                }
+                            }
+                        </pre>
+            </div>
+            
             <p>Note that when we use Promise.all, we do not get any result until all the operations have completed. This
                 can
                 make it appear to run slower.</p>
@@ -155,7 +190,22 @@
             <div id="content"></div>
         </div>
     </div>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
 
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
