@@ -111,16 +111,15 @@
         
                     promises.push(p);
                 }
+
+                // Note that Promise.all() itself returns a promise, so we call then() on it to get our result
                 Promise.all(promises)
                     .then(values => doOutput(values)); // ... and all the values are delivered here as an array, one value per promise
             }
 
             function doAsynchOperation(item, cb) {
                 setTimeout(() => {
-                    var words = item.text.split(" ");
-                    words[words.length - 1] = words[words.length - 1].toUpperCase();
-                    var obj = { text: words.join(" ") };
-                    var newItem = Object.assign({}, item, obj);
+                    ... // same as previous example
                     cb(newItem);
                 }, 300);
             }
