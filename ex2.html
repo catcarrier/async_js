@@ -68,10 +68,11 @@
         For example you might need to use the result of the first operation as an input to the second.
         Processing the results of asynchronous operations in a fixed order using vanilla JavaScript is
         <b>difficult</b>.
-        Continuing with out array from the previous example, suppose wish we to pass each element through an async operation, but process the results in array order.
+    </p>
+    <p>
+        Continuing with our array from the previous example, suppose we wish to pass each element through an async operation, but process the results in array order.
         One way to do this is to pass the whole array to a callback.
-        The callback removes and processes the first element, and then calls itself recursively until the array is
-        empty.
+        The callback removes and processes the first element, and then calls itself recursively until the array is empty.
     </p>
 
     <pre>
