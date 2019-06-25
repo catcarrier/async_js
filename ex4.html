@@ -92,9 +92,10 @@
             any) your async code returned.</p>
 
         <p>In this example we use Promise.all(), which returns an array of results, in order, when each of an array
-            of promises has resolved.</p>
+            of promises has resolved. Note that we have moved our array out of the global scope.</p>
 
         <pre>
+            function run() {
                 const items = [...];
 
                 var promises = [];
@@ -112,6 +113,7 @@
                 }
                 Promise.all(promises)
                     .then(values => doOutput(values)); // ... and all the values are delivered here as an array, one value per promise
+            }
 
             function doAsynchOperation(item, cb) {
                 setTimeout(() => {

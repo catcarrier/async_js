@@ -96,7 +96,11 @@
         </p>
 
         <pre>
-            const items = [...];
+            const items = [
+                { index: 0, text: "We few, we happy few, we band of brothers;" },
+                { index: 1, text: "For he to-day that sheds his blood with me" },
+                ...
+            ]; // this array is now global
             var modified_items = [];
 
             function run() {
@@ -127,7 +131,7 @@
             }
         </pre>
         <p>
-            This technique has much the same problems as the previous version:
+            This technique has much the same problems as the previous version. These include but are not limited to:
         </p>
         <ul>
             <li>Hard to read</li>
