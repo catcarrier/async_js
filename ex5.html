@@ -53,8 +53,8 @@
     <div id="banner">
         <h1>Asynchronous operations in JavaScript</h1>
         <h2>Async and await</h2>
-        <h4>async and await make Promises easier to deal with.</h4>
-        <button onclick="run()">Run</button>
+        <span>async and await make Promises easier to deal with.</span> <a href="#" class="button" onclick="run()">Run</a>
+        <!-- <button onclick="run()">Run</button> -->
     </div>
     <div id="wrapper">
         <div id="text">
@@ -72,32 +72,32 @@
             <div class="content">
         <pre>
 <strong>async</strong> function run() { // Because we will use await, we add the async modifier
-        const items = [
-            { index: 0, text: "We few, we happy few, we band of brothers;" },
-            ...
-        ];
-                    
-        for (var i = 0; i < items.length; i++) {
-            var value = <strong>await</strong> doAsynchOperation(items[i]); // await a function that returns a promise
-            doOutput(value);
-        }
-    } 
-                    
-    function doAsynchOperation(item) {
-        return new Promise(function (resolve, reject) {
-            setTimeout(() => {
-                var words = item.text.split(" ");
-                words[words.length - 1] = words[words.length - 1].toUpperCase();
-                var obj = { text: words.join(" ") };
-                item = Object.assign({}, item, obj);
-                resolve(item);
-            }, Math.random() * 300);
-        });
+    const items = [
+        { index: 0, text: "We few, we happy few, we band of brothers;" },
+        ...
+    ];
+                
+    for (var i = 0; i < items.length; i++) {
+        var value = <strong>await</strong> doAsynchOperation(items[i]); // await a function that returns a promise
+        doOutput(value);
     }
+} 
                     
-    function doOutput(item) {
-        // print output
-    }
+function doAsynchOperation(item) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            var words = item.text.split(" ");
+            words[words.length - 1] = words[words.length - 1].toUpperCase();
+            var obj = { text: words.join(" ") };
+            item = Object.assign({}, item, obj);
+            resolve(item);
+        }, Math.random() * 300);
+    });
+}
+                    
+function doOutput(item) {
+    // print output
+}
             </pre>
             </div>
             

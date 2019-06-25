@@ -77,9 +77,8 @@
     <div id="banner">
         <h1>Asynchronous operations in JavaScript</h1>
         <h2>Callbacks and the callback queue, part 3</h2>
-        <h4>You can process asynch results in a defined order by maintaining the state of your processing in a global object.</h4>
-        <button onclick="run()">Run</button>
-        <p>Next: <a href="ex4.html">Promises</a></p>
+        <span>You can process asynch results in a defined order by maintaining the state of your processing in a global object.</span> <a href="#" class="button" onclick="run()">Run</a>
+        <!-- <button onclick="run()">Run</button> -->
     </div>
     <div id="wrapper">
         <div id="text">
@@ -129,8 +128,6 @@
     }
         </pre>
             </div>
-
-            
             <p>
                 This technique has much the same problems as the previous version. These include but are not limited to:
             </p>
@@ -140,7 +137,9 @@
                 <li>Error handling is effectively impossible</li>
             </ul>
             <p>In addition, this technique cannot output anything until it has all the results, so it will appear to run
-                slower.</p>
+                slower.
+            </p>
+            <p>Next: <a href="ex4.html">Promises</a></p>
         </div>
         <div id="output">
             <div id="content"></div>
