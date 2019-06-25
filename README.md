@@ -18,3 +18,5 @@
 - _async_ and _await_ make promises easier to deal with
 
 [async and await](ex5.html)
+
+[Edit this page](https://github.com/catcarrier/async_js/edit/master/README.md)
