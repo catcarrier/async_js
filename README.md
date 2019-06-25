@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## A few remarks on asynchronous operations in JavaScript
 
 You can use the [editor on GitHub](https://github.com/catcarrier/async_js/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
