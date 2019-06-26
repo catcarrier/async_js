@@ -70,24 +70,25 @@
                 A Promise is a JavaScript construct that represents the future delivery of the result of an asynchronous
                 operation. A promise usually wraps around some asynchronous function.
             </p>
-            <p>The promise constructor takes a function as its argument. JavaScript creates this function implicitly;
-                you do
-                not have to write it. This function itself takes <i>two functions</i> as its arguments, and these are
+            <p>The promise constructor takes a function as its argument. JavaScript provides the implementation of this function implicitly.
+                This function in turn takes <i>two functions</i> as its arguments, and the implementations of these are
                 likewise created for you. By convention these are named <i>resolve</i> and <i>reject</i>.
                 All you have to do is invoke the one or the other:</p>
 
             <pre>var p = new Promise( function(resolve, reject) { /* Your code goes here; invoke resolve or reject */ } )</pre>
 
             <ul>
-                <li>Invoke the first function to <i>resolve</i> the promise and optionally return a result</li>
+                <li>Invoke the first function to <i>resolve</i> the promise and optionally pass it a value</li>
                 <li>Invoke the second function to <i>reject</i> the promise; optionally return an error</li>
             </ul>
 
             <p>If your code resolves the promise, the promise's then() function runs, and receives the result (if
-                any) your async code returned.</p>
+                any) your async code returned. You will sometimes hear Promises or promise-like objects provided by third party libraries referred to as <i>thenables</i>.</p>
 
             <p>In this example we use Promise.all(), which returns an array of results, in order, when each of an array
                 of promises has resolved. Note that we have moved our array out of the global scope.</p>
+
+            <p><a href="https://www.geeksforgeeks.org/javascript-promises/">Further reading</a></p>
 
             <button class="collapsible">Code</button>
             <div class="content">
