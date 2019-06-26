@@ -65,10 +65,25 @@
                 syntax is sometimes clumsy. Two keywords, <i>async</i> and <i>await</i>, make Promises easier to work with.
             </p>
 
-            <p>Use await when invoking a method that returns a promise. If the promise resolves, await returns the
-                value.
-                Your code will pause until the promise resolves or rejects.</p>
-            <p>Add async as a modifier on any function where you use await.</p>
+            <ul>
+                <li>Use await when invoking a method that returns a promise</li>
+                <ul>
+                    <li>When the promise resolves, await returns the value</li>
+                    <li>Your code will pause until the promise resolves or rejects</li>
+                </ul>
+                <li>Add async as a modifier on any function where you use await</li>
+            </ul>
+
+            <pre>
+    async function run() {
+       var items = [...];
+       for (var i = 0; i < items.length; i++) {
+          var value = await doSomeAsynchOperation(items[i]);
+          doSomethingWithResult(value);
+        }
+    }
+            </pre>
+
 
             <button class="collapsible">Code</button>
             <div class="content">
@@ -83,8 +98,16 @@
         var value = <strong>await</strong> doAsynchOperation(items[i]); // await a function that returns a promise
         doOutput(value);
 
-        // If you cannot add async/await:
-        // doAsynchOperation(items[i]).then( value => doOutput(value))
+        // Or, because doAsynchOperation returns a promise, you could do this:
+        // doAsynchOperation(items[i]).then( value => doOutput(value));
+
+        // And your code will run in lexical order, even though it's asynchronous:
+        // var p1 = doAsynchOperation(items[0]);
+        // var p2 = doAsynchOperation(items[1]);
+        // var p3 = doAsynchOperation(items[2]);
+        // doOutput(await p1);
+        // doOutput(await p2);
+        // doOutput(await p3);
     }
 } 
                     
