@@ -114,11 +114,18 @@ function run() {
         doAsynchOperation(items[i], doOutput)
     }
     
-    // print "setting up callbacks... done" <-- Callbacks cannot run until this line completes and run() is removed from the stack, leaving the thread available for other work
+    // Callbacks cannot run until this next line completes and run() is removed from the stack.
+    // Only with the stack empty is the thread available for other work.
+
+    // print "setting up callbacks... done" 
 }
 
 function doAsynchOperation(item, cb) {
-    setTimeout(() => { // setTimeout is a convenient way to tell JS to run our doOutput asynchronously
+    // setTimeout is a convenient way to simulate an async operation.
+    // Whatever function we give it to run is placed in the callback queue
+    // and run when the thread becomes available, just as a web service call
+    // or a file system function would usually be.
+    setTimeout(() => { 
         var words = item.text.split(" ");
         words[words.length - 1] = words[words.length - 1].toUpperCase();
         var obj = { text: words.join(" ") };

@@ -108,9 +108,10 @@ function run() {
         promises.push(p);
     }
 
-    // Note that Promise.all() itself returns a promise, so we call then() on it to get our result
+    // Note that Promise.all() itself returns a promise, so we call then() on it to get our result.
+    // All the values are delivered to then() as an array, one value per promise, in order.
     Promise.all(promises)
-        .then(values => doOutput(values)); // ... and all the values are delivered here as an array, one value per promise
+        .then(values => doOutput(values)); 
 }
 
 function doAsynchOperation(item, cb) {

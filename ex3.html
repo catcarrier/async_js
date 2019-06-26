@@ -117,9 +117,10 @@
                 
     function doOutput(item) {
         modified_items.push(item); // order is undefined
-                
-        if (modified_items.length == items.length) { // when the new array is the same size as the original, then we have all the elements
-            modified_items = modified_items.sort((a, b) => a.index - b.index); // sort the elements by index
+             
+        // when the new array is the same size as the original, then we have all the elements
+        if (modified_items.length == items.length) { 
+            modified_items = modified_items.sort((a, b) => a.index - b.index); // sort
             for (var i = 0; i < modified_items.length; i++) {
                 // output the verse
             }
