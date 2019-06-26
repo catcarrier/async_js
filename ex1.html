@@ -66,30 +66,36 @@
     </div>
     <div id="wrapper">
         <div id="text">
-            <p>Calls to asynchronous operations are placed in a special area called the callback queue, and run only
-                when
-                our current function has completed. The callback queue works together with the <a
-                    href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">event loop</a> to execute your callback once the
-                thread is available.
+            <p>When we invoke an asynchronous operation (example, read a file, or invoke a web service) we usually pass
+                a function called a callback, whose job it is to wait in a special area called the callback queue until 
+                such time as the result of the operation is available.
+                When the result -- the text of the file et cet --  is avilable it is passed to the callback.
             </p>
 
             <p>
-                Because JavaScript is single-threaded, as long as the current function ("run") is occupying the call
-                stack,
-                the underlying thread is not available
-                to run any of the callbacks. When the callbacks do run, their run order is undefined.
+               Another process called the <a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">event loop</a> waits for the thread
+               to become available, and moves the callback onto the call stack, and it runs.
             </p>
 
             <p>
-                In this example we output each verse through a call to an asynchronous function (we use setTimeout() to
-                achieve this; a more realistic example might be a file system operation, which are usually
-                asynchronous).
-                Each callback is invoked after a delay of at least 300 ms, and returns the verse with the last word
-                uppercased.
+                Because JavaScript is single-threaded, as long as the current function ("run" in this example) is occupying the call
+                stack, the underlying thread is not available to run anything else. When the callbacks do run, 
+                their run order is undefined. The only thing we can be sure of is that the callback will not run until after run() completes.
+            </p>
+
+            <p>
+                In this example we output each verse through a call to an asynchronous function which returns a modified
+                version of it (it returns a copy with the last word uppercased). We pass a callback which will receive
+                the modified verse and print it.
+            </p>
+            <p>
+                We use setTimeout() to make this run asynchronously. setTimeout places your 
+                callback in the callback queue and makes it sit there at least n milliseconds. So we are mimicking the
+                slight time lag we would expect from a file system operation or a web service call, which are usually asynchronous.
             </p>
 
             <ul>
-                <li>Callbacks cannot execute until the current function has completed</li>
+                <li>Callbacks cannot execute until the call stack is empty. At a minimum, this means when the current function has completed.</li>
                 <li>Callbacks can execute in any order</li>
             </ul>
 
